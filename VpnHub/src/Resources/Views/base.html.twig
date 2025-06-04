@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}VPN Manager - Gerenciamento Interno{% endblock %}</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    :focus-visible {
+      outline: 3px solid #4f46e5;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex">
+
+  {# Sidebar/Menu #}
+  {% include 'partials/_sidebar.html.twig' %}
+
+  <main class="flex-grow ml-64 p-8 max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold text-indigo-700 mb-8">{% block page_title %}Dashboard{% endblock %}</h1>
+
+    {# Conteúdo dinâmico #}
+    {% block content %}
+    {% endblock %}
+
+    <footer class="text-center text-gray-500 text-sm mt-16 select-none">
+      © 2025 VPN Manager - Todos os direitos reservados.
+    </footer>
+  </main>
+
+</body>
+</html>

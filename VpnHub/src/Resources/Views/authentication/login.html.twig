@@ -1,0 +1,21 @@
+{% extends 'base_public.html.twig' %}
+
+{% block content %}
+<div class="max-w-md w-full bg-white rounded-xl shadow p-8">
+  <h1 class="text-2xl font-bold text-indigo-700 mb-6">Login</h1>
+  <form method="post" action="/login">
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Username</label>
+      <input type="text" name="username" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" minlength="3" maxlength="30" required>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Senha</label>
+      <input type="password" name="password" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+    </div>
+    <div class="flex justify-between items-center">
+      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Entrar</button>
+      <a href="/password-reset" class="text-indigo-600 hover:underline">Esqueceu a senha?</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
