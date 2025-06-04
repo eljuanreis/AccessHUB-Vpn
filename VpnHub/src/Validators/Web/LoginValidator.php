@@ -3,9 +3,9 @@
 namespace App\Validators\Web;
 
 use App\Core\Request;
-use App\Validators\ValidatorInterface;
+use App\Validators\WebValidatorInterface;
 
-class LoginValidator implements ValidatorInterface
+class LoginValidator implements WebValidatorInterface
 {
     protected array $messageBag = [];
 
@@ -17,6 +17,10 @@ class LoginValidator implements ValidatorInterface
 
         if (empty($request->input('password'))) {
             $this->messageBag[] = 'Informe o password do usuário para realizar o processo de entrada';
+        }
+
+        if (strlen($request->input('username')) < 3 || strlen($request->input('username')) > 30) {
+            $this->messageBag[] = 'Verifique o seu usuário e tente novamente';
         }
 
         if (count($this->messageBag) > 0) {

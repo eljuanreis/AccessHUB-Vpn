@@ -4,7 +4,7 @@ namespace App\Validators;
 
 use App\Core\Request;
 
-interface ValidatorInterface 
+interface WebValidatorInterface 
 {
     public function validate(Request $request) : bool;
     public function messages() : array;

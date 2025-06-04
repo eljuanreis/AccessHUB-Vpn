@@ -18,8 +18,10 @@ $kernel->webApplication(
 /**
  * Definição de rotas
  */
-$router = new Router();
+$router = $kernel->get('router');
 $router->get('/login', 'AuthController@show');
+$router->post('/login', 'AuthController@login');
+
 $router->get('/revoke', 'RevokeController@dispatch');
 
 $router->dispatch(new Request());

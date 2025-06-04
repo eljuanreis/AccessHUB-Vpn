@@ -11,6 +11,7 @@ class Kernel
 
     public function webApplication($basePath, $entityPath)
     {
+        $this->routes();
         $this->env($basePath);
         $this->view($basePath);
         $this->orm($entityPath);
@@ -28,6 +29,12 @@ class Kernel
         if (!static::$application) {
             static::$application = $this;
         }
+    }
+
+    protected function routes()
+    {
+        $router = new Router();
+        $this->app['router'] = $router;
     }
 
     protected function env($basePath)

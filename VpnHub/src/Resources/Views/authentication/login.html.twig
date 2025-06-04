@@ -3,6 +3,9 @@
 {% block content %}
 <div class="max-w-md w-full bg-white rounded-xl shadow p-8">
   <h1 class="text-2xl font-bold text-indigo-700 mb-6">Login</h1>
+      <div class="mb-4">
+       {% include 'partials/_alerts.html.twig' %}
+    </div>
   <form method="post" action="/login">
     <div class="mb-4">
       <label class="block text-gray-700 mb-2">Username</label>

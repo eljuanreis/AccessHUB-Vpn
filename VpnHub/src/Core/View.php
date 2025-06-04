@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Utils\Session;
 use Twig\Environment;
 
 class View
@@ -32,7 +33,29 @@ class View
     public static function make(string $path, array $data = [])
     {
         $path = sprintf('%s.html.twig', $path);
+
+        $flashMessages = static::getFlashMessages();
+
+        $data = array_merge($data, $flashMessages);
+
+        $page = static::$twig->render($path, $data);
         
-        return new Response(static::$twig->render($path, $data));
+        return new Response($page);
+    }
+
+    protected static function getFlashMessages()
+    {
+        session_start();
+
+        $data = [];
+        
+        if (isset($_SESSION[Session::FLASH])) {
+            foreach ($_SESSION[Session::FLASH] as $key => $flash) {
+                $data[$key] = $flash;
+                Session::destroy(Session::FLASH, $key);
+            }
+        }
+
+        return $data;
     }
 }

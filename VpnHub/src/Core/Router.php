@@ -44,8 +44,26 @@ class Router
         }
 
         $controllerInstance = new $controller;
-
+        
         $response = call_user_func([$controllerInstance, $methodAction], $request);
         $response->send();
+    }
+
+    /**
+     * Verifica se a rota existe.
+     */
+    public function routeExists($method, $uri)
+    {
+        return isset($this->routes[$method][$uri]);
+    }
+
+    public function route($method, $uri)
+    {
+        if ($this->routeExists($method, $uri)) {
+            header('Location: ' . $uri);
+            exit;
+        }
+
+        throw new \Exception(sprintf('[%s] %s não definida',  $method, $uri));
     }
 }

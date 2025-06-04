@@ -5,32 +5,21 @@ namespace App\Services;
 use App\Core\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Validators\Web\LoginValidator;
+use App\Validators\Entities\UserValidator;
 
 class UserService
 {
-    public function login(Request $request): bool
+    public function create(User $user)
     {
+        $validator = new UserValidator();
+        
+        if (!$validator->create($user)) {
+            throw new \Exception(implode(',', $validator->messages()));
+        }
+
         try {
-            $validator = new LoginValidator($request);
-
-            if (!$validator) {
-                //exibir erros
-            }
-
-            $user = new UserRepository();
-            $user->findByUsername($request->input('username'));
-
-            if (!$user) {
-               //Usuário não encontrado
-            }
-
-            if (!password_verify($request->input('password'), $user->getPassword())) {
-                 // Senha incorreta somar mais um no user_attemps
-                return false; // Senha incorreta
-            }
-
-             return true;
+            $repository = new UserRepository();
+            $repository->save($user);
         } catch (\Throwable $th) {
             throw $th;
         }

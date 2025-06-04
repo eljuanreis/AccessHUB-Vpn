@@ -1,0 +1,26 @@
+<?php
+/**
+ * Classe para executar comandos de ORM via terminal.
+ */
+
+// bin/doctrine
+
+use App\Core\Kernel;
+use App\Core\Orm;
+use App\Database\Seeders\Seeder;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$kernel = new Kernel();
+$kernel->ormConsoleApplication(
+    basePath:__DIR__. '/../', 
+    entityPath: __DIR__. '/../src/Entity'
+);
+
+$seeder = new Seeder();
+
+foreach ($seeder->load() as $seed) {
+    $seed->execute();
+}
