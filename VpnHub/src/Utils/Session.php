@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-class Session 
+class Session
 {
     const FLASH = '_flash';
 
@@ -15,14 +15,14 @@ class Session
         session_start();
     }
 
-    public static function put($identifier, $key, $value = null) 
+    public static function put($identifier, $key, $value = null)
     {
         static::start();
 
         $_SESSION[$identifier][$key] = $value;
     }
 
-    public static function destroy($identifier, $key) 
+    public static function destroy($identifier, $key)
     {
         static::start();
 

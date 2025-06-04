@@ -7,9 +7,10 @@ use App\Traits\ResponseTrait;
 use App\Traits\ValidateTokenTrait;
 use App\Utils\Downloader;
 
-class DownloadController 
+class DownloadController
 {
-    use ValidateTokenTrait, ResponseTrait;
+    use ValidateTokenTrait;
+    use ResponseTrait;
 
     protected Request $request;
     protected $data;
@@ -23,7 +24,7 @@ class DownloadController
         }
     }
 
-    public function download() 
+    public function download()
     {
         try {
             $file = Downloader::download($this->request->input('user_id'));
@@ -32,7 +33,7 @@ class DownloadController
         }
 
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
         header('Content-Length: ' . filesize($file));
 
         $fp = fopen($file, 'rb');

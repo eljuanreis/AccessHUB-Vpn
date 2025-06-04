@@ -7,7 +7,7 @@ use App\Utils\Token;
 trait ValidateTokenTrait
 {
     protected function validateRequest()
-    {        
+    {
         if (!$this->request->input('token')) {
             return $this->response(400);
         }

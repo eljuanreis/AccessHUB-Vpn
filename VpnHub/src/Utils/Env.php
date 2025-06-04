@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-class Env 
+class Env
 {
     public static function get(string $name, $default = null)
     {

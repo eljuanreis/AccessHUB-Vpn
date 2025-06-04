@@ -12,7 +12,7 @@ class UserService
     public function create(User $user)
     {
         $validator = new UserValidator();
-        
+
         if (!$validator->create($user)) {
             throw new \Exception(implode(',', $validator->messages()));
         }

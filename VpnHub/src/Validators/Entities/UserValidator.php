@@ -10,7 +10,7 @@ class UserValidator implements EntityValidatorInterface
 {
     protected array $messageBag = [];
 
-    public function create($object) : bool
+    public function create($object): bool
     {
         if (empty($object->getUsername())) {
             $this->messageBag[] = 'Informe o username';
@@ -22,7 +22,7 @@ class UserValidator implements EntityValidatorInterface
 
         $repository = new UserRepository();
         if ($repository->findByUsername($object->getUsername())) {
-          $this->messageBag[] = 'Já existe um usuário com esse nome';
+            $this->messageBag[] = 'Já existe um usuário com esse nome';
         }
 
         if (count($this->messageBag) > 0) {
@@ -32,7 +32,7 @@ class UserValidator implements EntityValidatorInterface
         return true;
     }
 
-    public function messages() : array
+    public function messages(): array
     {
         return $this->messageBag;
     }

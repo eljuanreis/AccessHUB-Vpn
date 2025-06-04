@@ -30,7 +30,7 @@ class LoginValidator implements WebValidatorInterface
         return true;
     }
 
-    public function messages() : array
+    public function messages(): array
     {
         return $this->messageBag;
     }

@@ -22,37 +22,52 @@ class User
     #[ORM\Column(type: "integer")]
     private int $loginAttempts = 0;
 
-    public function getId(): ?int { return $this->id; }
-
-    public function getUsername(): string { return $this->username; }
-
-    public function setUsername(string $username): self { 
-        $this->username = $username; 
-        return $this; 
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
-    public function getPassword(): string { return $this->password; }
-
-    public function setPassword(string $password): self { 
-        $this->password = $password; 
-        return $this; 
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
-    public function getLoginAttempts(): int {
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getLoginAttempts(): int
+    {
         return $this->loginAttempts;
     }
 
-    public function setLoginAttempts(int $attempts): self {
+    public function setLoginAttempts(int $attempts): self
+    {
         $this->loginAttempts = $attempts;
         return $this;
     }
 
-    public function incrementLoginAttempts(): self {
+    public function incrementLoginAttempts(): self
+    {
         $this->loginAttempts++;
         return $this;
     }
 
-    public function resetLoginAttempts(): self {
+    public function resetLoginAttempts(): self
+    {
         $this->loginAttempts = 0;
         return $this;
     }

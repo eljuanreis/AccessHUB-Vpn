@@ -10,7 +10,7 @@ use App\Utils\Session;
 use App\Utils\SessionFlash;
 use App\Validators\Web\LoginValidator;
 
-class AuthController 
+class AuthController
 {
     public function show()
     {

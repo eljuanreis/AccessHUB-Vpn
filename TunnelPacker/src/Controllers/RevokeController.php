@@ -7,9 +7,10 @@ use App\Traits\ResponseTrait;
 use App\Traits\ValidateTokenTrait;
 use App\Utils\Revoker;
 
-class RevokeController 
+class RevokeController
 {
-    use ValidateTokenTrait, ResponseTrait;
+    use ValidateTokenTrait;
+    use ResponseTrait;
 
     protected Request $request;
     protected $data;
@@ -23,7 +24,7 @@ class RevokeController
         }
     }
 
-    public function revoke() 
+    public function revoke()
     {
         try {
             $exec = Revoker::revoke($this->request->input('user_id'));

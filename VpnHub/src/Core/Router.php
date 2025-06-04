@@ -43,8 +43,8 @@ class Router
             return;
         }
 
-        $controllerInstance = new $controller;
-        
+        $controllerInstance = new $controller();
+
         $response = call_user_func([$controllerInstance, $methodAction], $request);
         $response->send();
     }
@@ -64,6 +64,6 @@ class Router
             exit;
         }
 
-        throw new \Exception(sprintf('[%s] %s não definida',  $method, $uri));
+        throw new \Exception(sprintf('[%s] %s não definida', $method, $uri));
     }
 }

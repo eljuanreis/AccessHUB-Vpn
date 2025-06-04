@@ -43,7 +43,7 @@ class Router
             return;
         }
 
-        $controllerInstance = new $controller;
+        $controllerInstance = new $controller();
 
         // Injeção de dependência: passa Request para o método
         return call_user_func([$controllerInstance, $methodAction], $request);

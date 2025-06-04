@@ -9,14 +9,13 @@ class View
 {
     protected string $viewsPath;
     protected string $viewsCache;
-    
+
     public static Environment $twig;
 
     public function __construct(protected string $basePath)
     {
-        $this->viewsPath = $basePath.'/src/Resources/Views';
-        $this->viewsCache = $basePath.'/src/Resources/Views/caching';
-
+        $this->viewsPath = $basePath . '/src/Resources/Views';
+        $this->viewsCache = $basePath . '/src/Resources/Views/caching';
     }
     /**
      * Inicializado no Kernel.
@@ -39,7 +38,7 @@ class View
         $data = array_merge($data, $flashMessages);
 
         $page = static::$twig->render($path, $data);
-        
+
         return new Response($page);
     }
 
@@ -48,7 +47,7 @@ class View
         session_start();
 
         $data = [];
-        
+
         if (isset($_SESSION[Session::FLASH])) {
             foreach ($_SESSION[Session::FLASH] as $key => $flash) {
                 $data[$key] = $flash;

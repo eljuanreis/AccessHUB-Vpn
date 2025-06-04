@@ -4,15 +4,15 @@ namespace App\Utils;
 
 use Exception;
 
-class Downloader 
+class Downloader
 {
     protected const DIRECTORY = '/etc/openvpn/client-configs/%s.zip';
     protected const CREATE_USER_SCRIPT = 'sudo sh /home/userlinux/create_user.sh %s';
 
-    public static function download($userId) 
+    public static function download($userId)
     {
         // return 'C:\Users\dti\Desktop\Nova pasta\teste.zip';
-        
+
         $path = sprintf(static::DIRECTORY, $userId);
 
         if (!file_exists($path) && !static::make($userId)) {
@@ -25,7 +25,7 @@ class Downloader
     protected static function make($userId)
     {
         $output = null;
-        $retval= null;
+        $retval = null;
 
         $script = sprintf(static::CREATE_USER_SCRIPT, $userId);
 

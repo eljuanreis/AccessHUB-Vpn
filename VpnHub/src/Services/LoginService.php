@@ -9,7 +9,7 @@ use App\Validators\Web\LoginValidator;
 class LoginService
 {
     const LOGIN_LIMIT_ATTEMPTS = 10;
-    
+
     protected array $messageBag = [];
 
     public function login(Request $request): bool
@@ -41,9 +41,9 @@ class LoginService
             if (!password_verify($request->input('password'), $user->getPassword())) {
                  // Senha incorreta somar mais um no user_attemps
                 $this->messageBag[] = 'Usuário ou senha estão incorretos';
-                
+
                 $user->incrementLoginAttempts();
-                
+
                 $userRepository->save($user);
 
                 return false;
@@ -55,7 +55,7 @@ class LoginService
         }
     }
 
-    public function messages() : array
+    public function messages(): array
     {
         return $this->messageBag;
     }
