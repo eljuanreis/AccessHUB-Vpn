@@ -4,6 +4,7 @@ namespace App\Utils;
 
 class Session
 {
+    const USER = '_user';
     const FLASH = '_flash';
 
     protected static function start()
@@ -15,14 +16,21 @@ class Session
         session_start();
     }
 
-    public static function put($identifier, $key, $value = null)
+    public static function put($identifier, $key, $value = null) : void
     {
         static::start();
 
         $_SESSION[$identifier][$key] = $value;
     }
 
-    public static function destroy($identifier, $key)
+    public static function get($identifier, $key) : mixed
+    {
+        static::start();
+
+        return $_SESSION[$identifier][$key];
+    }
+
+    public static function destroy($identifier, $key)  : void
     {
         static::start();
 

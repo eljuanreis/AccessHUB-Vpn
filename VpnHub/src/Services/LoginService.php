@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Core\Request;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Validators\Web\LoginValidator;
 use App\Validators\Web\SendResetPasswordLinkValidator;
@@ -12,6 +13,7 @@ class LoginService
     const LOGIN_LIMIT_ATTEMPTS = 10;
 
     protected array $messageBag = [];
+    protected User $user;
 
     public function login(Request $request): bool
     {
@@ -50,7 +52,9 @@ class LoginService
                 return false;
             }
 
-             return true;
+            $this->user = $user;
+
+            return true;
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -65,7 +69,11 @@ class LoginService
 
             return false;
         }
+    }
 
+    public function getUser()
+    {
+        return $this->user;
     }
 
     public function messages(): array

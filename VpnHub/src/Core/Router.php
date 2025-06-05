@@ -2,16 +2,20 @@
 
 namespace App\Core;
 
+use App\Middlewares\MiddlewareInterface;
+
 class Router
 {
+    const MIDDLEWARE_LABEL = '_guards';
+
     protected $routes = [];
 
-    public function get($uri, $action)
+    public function get($uri, $action, $middleware = null)
     {
         $this->routes['GET'][$uri] = $action;
     }
 
-    public function post($uri, $action)
+    public function post($uri, $action, $middleware = null)
     {
         $this->routes['POST'][$uri] = $action;
     }
@@ -25,6 +29,10 @@ class Router
             http_response_code(404);
             echo "Rota não encontrada!";
             return;
+        }
+
+        if (isset($this->routes[self::MIDDLEWARE_LABEL][$uri])) {
+            $this->dispatchMiddlewares($this->routes[self::MIDDLEWARE_LABEL][$uri]);
         }
 
         $action = $this->routes[$method][$uri];
@@ -65,5 +73,20 @@ class Router
         }
 
         throw new \Exception(sprintf('[%s] %s não definida', $method, $uri));
+    }
+
+    public function addGlobalMiddleware($uri, $middleware)
+    {
+        $this->routes[self::MIDDLEWARE_LABEL][$uri][] = $middleware;
+    }
+
+    protected function dispatchMiddlewares(array $middlewares = [])
+    {
+        foreach ($middlewares as $middleware) {
+            $middleware = new $middleware();
+            if ($middleware instanceof MiddlewareInterface && !$middleware->execute()) {
+                exit;
+            }
+        }
     }
 }
