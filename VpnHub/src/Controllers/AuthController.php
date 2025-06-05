@@ -30,8 +30,7 @@ class AuthController
         Session::put(Session::USER, 'user', $user);
         Session::put(Session::FLASH, 'success', 'Você fez login');
         
-        //Checar se é ADMIN e redirecionar para o painel admin, se não, o painel convencional
-        return Route::redirect('GET', '/login');
+        return Route::redirect('GET', '/painel');
     }
 
     public function showPasswordReset()

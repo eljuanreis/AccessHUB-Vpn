@@ -10,12 +10,12 @@ class Router
 
     protected $routes = [];
 
-    public function get($uri, $action, $middleware = null)
+    public function get($uri, $action)
     {
         $this->routes['GET'][$uri] = $action;
     }
 
-    public function post($uri, $action, $middleware = null)
+    public function post($uri, $action)
     {
         $this->routes['POST'][$uri] = $action;
     }
@@ -25,14 +25,15 @@ class Router
         $method = $request->method();
         $uri = $request->uri();
 
+        $baseRoute = $this->baseRoute($uri);
+        if (isset($this->routes[self::MIDDLEWARE_LABEL][$baseRoute])) {
+            $this->dispatchMiddlewares($this->routes[self::MIDDLEWARE_LABEL][$baseRoute]);
+        }
+
         if (!isset($this->routes[$method][$uri])) {
             http_response_code(404);
             echo "Rota não encontrada!";
             return;
-        }
-
-        if (isset($this->routes[self::MIDDLEWARE_LABEL][$uri])) {
-            $this->dispatchMiddlewares($this->routes[self::MIDDLEWARE_LABEL][$uri]);
         }
 
         $action = $this->routes[$method][$uri];
@@ -78,6 +79,19 @@ class Router
     public function addGlobalMiddleware($uri, $middleware)
     {
         $this->routes[self::MIDDLEWARE_LABEL][$uri][] = $middleware;
+    }
+
+    protected function baseRoute($uri)
+    {
+        /**
+         * Item 0 é a '/', depois, vem a rota base.
+         */
+        return '/' . $this->routeTree($uri)[1];
+    }
+
+    protected function routeTree($uri)
+    {
+        return explode('/', $uri);
     }
 
     protected function dispatchMiddlewares(array $middlewares = [])

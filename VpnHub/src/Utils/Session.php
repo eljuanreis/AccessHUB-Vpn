@@ -7,7 +7,7 @@ class Session
     const USER = '_user';
     const FLASH = '_flash';
 
-    protected static function start()
+    public static function start()
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
@@ -23,11 +23,11 @@ class Session
         $_SESSION[$identifier][$key] = $value;
     }
 
-    public static function get($identifier, $key) : mixed
+    public static function get($identifier, $key, $default = null) : mixed
     {
         static::start();
 
-        return $_SESSION[$identifier][$key];
+        return $_SESSION[$identifier][$key] ?? $default;
     }
 
     public static function destroy($identifier, $key)  : void

@@ -18,10 +18,36 @@ class UserRepository extends AbstractRepository
         }
     }
 
+    public function remove(User $user): bool
+    {
+        try {
+            $this->entityManager()->remove($user);
+            $this->entityManager()->flush();
+
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function findById(int $id)
+    {
+        return $this->entityManager()
+            ->getRepository(User::class)
+            ->find($id);
+    }
+
     public function findByUsername(string $username): ?User
     {
         return $this->entityManager()
             ->getRepository(User::class)
             ->findOneBy(['username' => $username]);
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        return $this->entityManager()
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
     }
 }

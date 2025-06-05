@@ -44,7 +44,7 @@ class View
 
     protected static function getFlashMessages()
     {
-        session_start();
+        Session::start();
 
         $data = [];
 

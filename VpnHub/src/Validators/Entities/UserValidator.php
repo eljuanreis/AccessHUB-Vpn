@@ -22,7 +22,11 @@ class UserValidator implements EntityValidatorInterface
 
         $repository = new UserRepository();
         if ($repository->findByUsername($object->getUsername())) {
-            $this->messageBag[] = 'Já existe um usuário com esse nome';
+            $this->messageBag[] = 'Já existe um usuário com esse username';
+        }
+
+        if ($repository->findByEmail($object->getEmail())) {
+            $this->messageBag[] = 'Já existe um usuário com esse email';
         }
 
         if (count($this->messageBag) > 0) {
