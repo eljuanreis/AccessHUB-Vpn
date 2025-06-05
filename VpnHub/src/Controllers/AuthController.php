@@ -27,6 +27,11 @@ class AuthController
             return Route::redirect('GET', '/login');
         }
 
-        return 'foi';
+        $user = $loginService->getUser();
+        Session::put(Session::USER, 'user', $user);
+        Session::put(Session::FLASH, 'success', 'Você fez login');
+        
+        //Checar se é ADMIN e redirecionar para o painel admin, se não, o painel convencional
+        return Route::redirect('GET', '/login');
     }
 }
