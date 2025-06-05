@@ -8,7 +8,6 @@ use App\Services\LoginService;
 use App\Utils\Route;
 use App\Utils\Session;
 use App\Utils\SessionFlash;
-use App\Validators\Web\LoginValidator;
 
 class AuthController
 {
@@ -28,5 +27,21 @@ class AuthController
         }
 
         return 'foi';
+    }
+
+    public function showPasswordReset()
+    {
+        return View::make('authentication/password_reset_request');
+    }
+
+    public function passwordReset(Request $request)
+    {
+        $loginService = new LoginService();
+
+        if (!$loginService->sendResetPassword($request)) {
+            Session::put(Session::FLASH, 'errors', $loginService->messages());
+
+            return Route::redirect('GET', '/password-reset');
+        }
     }
 }

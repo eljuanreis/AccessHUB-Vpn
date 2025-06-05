@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Core\Request;
 use App\Repository\UserRepository;
 use App\Validators\Web\LoginValidator;
+use App\Validators\Web\SendResetPasswordLinkValidator;
 
 class LoginService
 {
@@ -53,6 +54,18 @@ class LoginService
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function sendResetPassword(Request $request)
+    {
+        $validator = new SendResetPasswordLinkValidator($request);
+
+        if (!$validator) {
+            $this->messageBag = $validator->messages();
+
+            return false;
+        }
+
     }
 
     public function messages(): array

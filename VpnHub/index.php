@@ -21,6 +21,9 @@ $kernel->webApplication(
 $router = $kernel->get('router');
 $router->get('/login', 'AuthController@show');
 $router->post('/login', 'AuthController@login');
+$router->get('/password-reset', 'AuthController@showPasswordReset');
+$router->post('/password-reset', 'AuthController@showPasswordReset');
+
 
 $router->get('/revoke', 'RevokeController@dispatch');
 
