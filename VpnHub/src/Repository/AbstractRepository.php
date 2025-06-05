@@ -24,7 +24,7 @@ class AbstractRepository
             ->orderBy('q.' . $webQueryBuilder->getOrderBy()['field'], $webQueryBuilder->getOrderBy()['type'])
             ->setFirstResult(($webQueryBuilder->getPage() - 1) * $webQueryBuilder->getLimit())
             ->setMaxResults($webQueryBuilder->getLimit());
-        
+
         foreach ($webQueryBuilder->getWheres() as $where) {
             list($field, $operator, $value) = $where;
 

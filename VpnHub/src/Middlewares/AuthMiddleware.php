@@ -7,7 +7,7 @@ use App\Utils\Route;
 
 class AuthMiddleware implements MiddlewareInterface
 {
-    public function execute() : bool
+    public function execute(): bool
     {
         if (Auth::isAuth()) {
             return true;

@@ -4,5 +4,5 @@ namespace App\Middlewares;
 
 interface MiddlewareInterface
 {
-    public function execute() : bool;
+    public function execute(): bool;
 }

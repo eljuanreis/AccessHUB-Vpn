@@ -16,21 +16,21 @@ class Session
         session_start();
     }
 
-    public static function put($identifier, $key, $value = null) : void
+    public static function put($identifier, $key, $value = null): void
     {
         static::start();
 
         $_SESSION[$identifier][$key] = $value;
     }
 
-    public static function get($identifier, $key, $default = null) : mixed
+    public static function get($identifier, $key, $default = null): mixed
     {
         static::start();
 
         return $_SESSION[$identifier][$key] ?? $default;
     }
 
-    public static function destroy($identifier, $key)  : void
+    public static function destroy($identifier, $key): void
     {
         static::start();
 

@@ -29,7 +29,7 @@ class AuthController
         $user = $loginService->getUser();
         Session::put(Session::USER, 'user', $user);
         Session::put(Session::FLASH, 'success', 'Você fez login');
-        
+
         return Route::redirect('GET', '/painel');
     }
 

@@ -36,7 +36,7 @@ $router->post('/password-reset', 'AuthController@showPasswordReset');
 $router->addGlobalMiddleware('/painel', AuthMiddleware::class);
 $router->get('/painel', 'PanelController@show');
 
-// $router->addGlobalMiddleware('/administrar-usuarios', AuthMiddleware::class);
+$router->addGlobalMiddleware('/administrar-usuarios', AuthMiddleware::class);
 $router->get('/administrar-usuarios', 'AdminUserController@show');
 $router->post('/administrar-usuarios/criar', 'AdminUserController@store');
 $router->post('/administrar-usuarios/eleger-admin', 'AdminUserController@promote');

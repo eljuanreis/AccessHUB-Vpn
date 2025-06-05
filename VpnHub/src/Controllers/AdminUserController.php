@@ -51,7 +51,7 @@ class AdminUserController
             }
         }
         Session::put(Session::FLASH, 'success', sprintf('Você criou o funcionário %s', $user->getUsername()));
-        
+
         return Route::redirect('GET', '/administrar-usuarios');
     }
 

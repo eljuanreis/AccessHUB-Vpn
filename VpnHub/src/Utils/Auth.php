@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class Auth
 {
-    public static function isAuth() : bool
+    public static function isAuth(): bool
     {
         $user = Session::get(Session::USER, 'user');
 

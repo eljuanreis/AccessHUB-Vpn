@@ -13,7 +13,6 @@ class UserService
 {
     public function __construct(protected UserRepository $repository)
     {
-        
     }
     public function list(Request $request)
     {
@@ -22,7 +21,7 @@ class UserService
         $webQueryBuilder->page($request->input('page', 1));
 
         if ($request->input('username')) {
-            $webQueryBuilder->where('username', 'LIKE', '%'.$request->input('username').'%');
+            $webQueryBuilder->where('username', 'LIKE', '%' . $request->input('username') . '%');
         }
 
         return $this->repository->webPaginate(
