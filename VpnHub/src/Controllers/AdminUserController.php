@@ -22,7 +22,12 @@ class AdminUserController
 
         return View::make(
             'panel/admin_users',
-            ['users' => $users, 'searchTerm' => $request->input('username')]
+            [
+                'users' => $users,
+                'searchTerm' => $request->input('username'),
+                'currentOrder' => $request->input('orderBy', 'name'),
+                'currentDirection' => $request->input('direction', 'asc')
+            ]
         );
     }
 
@@ -50,7 +55,8 @@ class AdminUserController
                 throw $th;
             }
         }
-        Session::put(Session::FLASH, 'success', sprintf('Você criou o funcionário %s', $user->getUsername()));
+
+        Session::put(Session::FLASH, 'success', [sprintf('Você criou o funcionário %s', $user->getUsername())]);
 
         return Route::redirect('GET', '/administrar-usuarios');
     }

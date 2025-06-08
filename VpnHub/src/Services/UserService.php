@@ -17,7 +17,7 @@ class UserService
     public function list(Request $request)
     {
         $webQueryBuilder = new WebQueryBuilder(User::class);
-        $webQueryBuilder->orderBy('username');
+        $webQueryBuilder->orderBy($request->input('orderBy', 'name'), $request->input('direction', 'asc'));
         $webQueryBuilder->page($request->input('page', 1));
 
         if ($request->input('username')) {
