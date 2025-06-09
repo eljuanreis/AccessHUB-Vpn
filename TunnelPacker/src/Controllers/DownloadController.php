@@ -24,7 +24,7 @@ class DownloadController
         }
 
         try {
-            $download =  Downloader::make($this->data->identifier);
+            $download =  Downloader::make($this->data);
 
             return $this->response(200, $download);
         } catch (\Throwable $th) {
@@ -32,7 +32,6 @@ class DownloadController
             return $this->response(400);
         }
     }
-
     public function download(Request $request)
     {
         $this->request = $request;
@@ -42,20 +41,29 @@ class DownloadController
         }
 
         try {
-            $file = Downloader::download($this->data->identifier);
+            $filepath = Downloader::download($this->data);
         } catch (\Throwable $th) {
             return $this->response(400);
         }
 
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
-        header('Content-Length: ' . filesize($file));
+        $fp = fopen($filepath, 'rb');
 
-        $fp = fopen($file, 'rb');
+        if (!file_exists($filepath)) {
+            return $this->response(404);
+        }
+
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="download.zip"');
+        header('Content-Length: ' . filesize($filepath));
+
+        $fp = fopen($filepath, 'rb');
+
+        if (!$fp) {
+            return $this->response(500);
+        }
 
         while (!feof($fp)) {
             echo fread($fp, 8192);
-
             ob_flush();
             flush();
         }
@@ -63,4 +71,5 @@ class DownloadController
         fclose($fp);
         exit;
     }
+
 }

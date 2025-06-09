@@ -24,12 +24,12 @@ class ConfigurationService
         $webQueryBuilder->orderBy($request->input('orderBy', 'createdAt'), $request->input('direction', 'asc'));
         $webQueryBuilder->page($request->input('page', 1));
 
-        if ($request->input('q')) {
-            $webQueryBuilder->where('identifier', 'LIKE', '%' . $request->input('q') . '%');
+        if ($request->input('identifierTerm')) {
+            $webQueryBuilder->where('identifier', 'LIKE', '%' . $request->input('identifierTerm') . '%');
         }
 
-        if ($request->input('q')) {
-            // $webQueryBuilder->where('createdAt', 'LIKE', '%' . $request->input('q') . '%');
+        if ($request->input('dateTerm')) {
+            $webQueryBuilder->where('createdAt', 'LIKE', '%' . $request->input('dateTerm') . '%');
         }
 
 
@@ -46,15 +46,10 @@ class ConfigurationService
         $period = new \DateInterval('P7D');
         $datePlus7DaysImmutable = $dateImmutable->add($period);
         $identifier = $this->identifier();
-        $token = Token::encryptToken(json_encode([
-                    'identifier' => $identifier,
-                    // 'user_id' => Auth::getUser()->getId(),
-                    'valid_until' => $datePlus7DaysImmutable
-        ]));
-
-        $data = ['token' => $token];
-                
-        $zip = $this->integration($data);
+        $token = Token::encryptToken($identifier);
+        
+        // Cria o .zip no servidor
+        $this->make($token);
 
         $configuration = new Configuration();
         $configuration->setIdentifier($identifier);
@@ -65,11 +60,11 @@ class ConfigurationService
 
         $configuration->setCreatedAt($dateMutable);
         $configuration->setValidUntil($datePlus7DaysMutable);
-        $configuration->setDownloadLink(sprintf('%sdownload?token=%s', Env::get('API_PACKER'), $token));
+        $configuration->setDownloadLink($token);
 
         $user = new UserRepository();
-        // $user = $user->findById(Auth::getUser()->getId());
-        $user = $user->findById(1);
+        $user = $user->findById(Auth::getUser()->getId());
+        // $user = $user->findById(1);
 
         $configuration->setUser($user);
 
@@ -91,12 +86,23 @@ class ConfigurationService
         return $id;
     }
 
-    protected function integration($data)
+    public function download(Configuration $config)
     {
-        $jsonData = json_encode($data);
+        if ($config->getUser()->getId() == Auth::getUser()->getId()) {
+            $token = $config->getDownloadLink();
+            $file = $this->getZip($token);
+
+            return $file;
+        }
+
+        return null;
+    }
+
+    protected function make($token)
+    {
 
         $ch = curl_init(
-            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', $data['token']
+            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', $token
         ));
 
         // Set cURL options
@@ -104,9 +110,9 @@ class ConfigurationService
         curl_setopt($ch, CURLOPT_POST, true); // Use POST method
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonData)
+            'Content-Length: ' . strlen($token)
         ]);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $token);
 
         $response = curl_exec($ch);
 
@@ -119,6 +125,37 @@ class ConfigurationService
         curl_close($ch);
 
         return $response;
+    }
+
+    protected function getZip(string $token)
+    {
+        $url = sprintf('%s?token=%s', Env::get('API_PACKER') . 'download', $token);
+
+        $ch = curl_init($url);
+        
+        // Salvar o conteúdo em um arquivo temporário
+        $tempFile = tempnam(sys_get_temp_dir(), 'zip_');
+
+        $fp = fopen($tempFile, 'w+');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // seguir redirecionamentos
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); // timeout opcional
+        curl_setopt($ch, CURLOPT_FAILONERROR, true); // falhar se código HTTP for >= 400
+
+        $success = curl_exec($ch);
+
+        if (!$success || curl_errno($ch)) {
+            echo 'Request error: ' . curl_error($ch);
+            curl_close($ch);
+            fclose($fp);
+            return false;
+        }
+
+        curl_close($ch);
+        fclose($fp);
+
+        // Retorna o caminho do arquivo baixado
+        return $tempFile;
     }
 
     public function findByIdentifier(string $identifier)

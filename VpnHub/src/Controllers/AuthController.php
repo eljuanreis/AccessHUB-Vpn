@@ -30,7 +30,7 @@ class AuthController
         Session::put(Session::USER, 'user', $user);
         Session::put(Session::FLASH, 'success', 'Você fez login');
 
-        return Route::redirect('GET', '/painel');
+        return Route::redirect('GET', '/vpn');
     }
 
     public function showPasswordReset()

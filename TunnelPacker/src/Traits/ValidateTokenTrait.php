@@ -16,7 +16,13 @@ trait ValidateTokenTrait
             if ($data = Token::decryptToken($this->request->input('token'))) {
                 $this->data = json_decode($data);
             }
+
+           if (!$this->data) {
+                return $this->response(500);
+           }
+
         } catch (\Throwable $th) {
+            throw $th;
             return $this->response(500);
         }
 

@@ -49,6 +49,7 @@ $router->post('/administrar-usuarios/remover-usuarios', 'AdminUserController@rem
 $router->get('/vpn', 'ConfigurationController@show');
 $router->post('/vpn', 'ConfigurationController@generate');
 $router->post('/vpn/delete', 'ConfigurationController@delete');
+$router->get('/vpn/download', 'ConfigurationController@download');
 
 $router->dispatch(new Request());
 
