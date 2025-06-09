@@ -15,19 +15,34 @@ class DownloadController
     protected Request $request;
     protected $data;
 
-    public function dispatch(Request $request)
+    public function make(Request $request)
     {
         $this->request = $request;
 
-        if ($this->validateRequest()) {
-            $this->download();
+        if (!$this->validateRequest()) {
+            return false;
+        }
+
+        try {
+            $download =  Downloader::make($this->data->identifier);
+
+            return $this->response(200, $download);
+        } catch (\Throwable $th) {
+            throw $th;
+            return $this->response(400);
         }
     }
 
-    public function download()
+    public function download(Request $request)
     {
+        $this->request = $request;
+
+        if (!$this->validateRequest()) {
+            return false;
+        }
+
         try {
-            $file = Downloader::download($this->request->input('user_id'));
+            $file = Downloader::download($this->data->identifier);
         } catch (\Throwable $th) {
             return $this->response(400);
         }

@@ -30,7 +30,7 @@ class UserRepository extends AbstractRepository
         }
     }
 
-    public function findById(int $id)
+    public function findById(int $id): ?User
     {
         return $this->entityManager()
             ->getRepository(User::class)

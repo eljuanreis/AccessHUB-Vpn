@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Entity\User;
+
 class Auth
 {
     public static function isAuth(): bool
@@ -13,5 +15,14 @@ class Auth
         }
 
         return false;
+    }
+
+    public static function getUser(): ?User
+    {
+        if (static::isAuth()) {
+            return Session::get(Session::USER, 'user');
+        }
+
+        return null;
     }
 }

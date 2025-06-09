@@ -11,19 +11,19 @@ class Downloader
 
     public static function download($userId)
     {
-        // return 'C:\Users\dti\Desktop\Nova pasta\teste.zip';
-
         $path = sprintf(static::DIRECTORY, $userId);
 
-        if (!file_exists($path) && !static::make($userId)) {
+        if (!file_exists($path)) {
             throw new \Exception('Erro ao gerar o arquivo');
         }
 
         return $path;
     }
 
-    protected static function make($userId)
+    public static function make($userId)
     {
+        return 'C:\Users\DeLL\Desktop\AccessHUB-Vpn\TunnelPacker\teste.zip';
+
         $output = null;
         $retval = null;
 
@@ -32,7 +32,7 @@ class Downloader
         exec($script, $output, $retval);
 
         if ($retval === 0) {
-            return true;
+             return sprintf(static::DIRECTORY, $userId);
         }
 
         return false;

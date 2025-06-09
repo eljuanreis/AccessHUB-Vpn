@@ -14,6 +14,7 @@ class UserService
     public function __construct(protected UserRepository $repository)
     {
     }
+    
     public function list(Request $request)
     {
         $webQueryBuilder = new WebQueryBuilder(User::class);

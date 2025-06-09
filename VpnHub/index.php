@@ -45,6 +45,10 @@ $router->post('/administrar-usuarios/ativar-acesso', 'AdminUserController@active
 $router->post('/administrar-usuarios/revogar-acesso', 'AdminUserController@inactive');
 $router->post('/administrar-usuarios/remover-usuarios', 'AdminUserController@remove');
 
+// $router->addGlobalMiddleware('/vpn', AuthMiddleware::class);
+$router->get('/vpn', 'ConfigurationController@show');
+$router->post('/vpn', 'ConfigurationController@generate');
+$router->post('/vpn/delete', 'ConfigurationController@delete');
 
 $router->dispatch(new Request());
 

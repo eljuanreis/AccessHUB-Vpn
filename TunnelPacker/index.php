@@ -16,8 +16,9 @@ $dotenv->load();
  * Definição de rotas
  */
 $router = new Router();
-$router->get('/download', 'DownloadController@dispatch');
-$router->get('/revoke', 'RevokeController@dispatch');
+$router->post('/download', 'DownloadController@dispatch');
+$router->post('/make', 'DownloadController@make');
+$router->post('/revoke', 'RevokeController@dispatch');
 
 $router->dispatch(new Request());
 
