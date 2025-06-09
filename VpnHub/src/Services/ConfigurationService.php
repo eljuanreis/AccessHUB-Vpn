@@ -16,7 +16,6 @@ class ConfigurationService
 {
     public function __construct(protected ConfigurationRepository $repository)
     {
-        
     }
     public function list(Request $request)
     {
@@ -41,40 +40,38 @@ class ConfigurationService
     public function generate()
     {
         try {
+            $dateImmutable = new \DateTimeImmutable();
+            $period = new \DateInterval('P7D');
+            $datePlus7DaysImmutable = $dateImmutable->add($period);
+            $identifier = $this->identifier();
+            $token = Token::encryptToken($identifier);
 
-        $dateImmutable = new \DateTimeImmutable();
-        $period = new \DateInterval('P7D');
-        $datePlus7DaysImmutable = $dateImmutable->add($period);
-        $identifier = $this->identifier();
-        $token = Token::encryptToken($identifier);
-        
         // Cria o .zip no servidor
-        $this->make($token);
+            $this->make($token);
 
-        $configuration = new Configuration();
-        $configuration->setIdentifier($identifier);
+            $configuration = new Configuration();
+            $configuration->setIdentifier($identifier);
 
         // converte para DateTime mutável antes de setar:
-        $dateMutable = \DateTime::createFromFormat('Y-m-d H:i:s', $dateImmutable->format('Y-m-d H:i:s'));
-        $datePlus7DaysMutable = \DateTime::createFromFormat('Y-m-d H:i:s', $datePlus7DaysImmutable->format('Y-m-d H:i:s'));
+            $dateMutable = \DateTime::createFromFormat('Y-m-d H:i:s', $dateImmutable->format('Y-m-d H:i:s'));
+            $datePlus7DaysMutable = \DateTime::createFromFormat('Y-m-d H:i:s', $datePlus7DaysImmutable->format('Y-m-d H:i:s'));
 
-        $configuration->setCreatedAt($dateMutable);
-        $configuration->setValidUntil($datePlus7DaysMutable);
-        $configuration->setDownloadLink($token);
+            $configuration->setCreatedAt($dateMutable);
+            $configuration->setValidUntil($datePlus7DaysMutable);
+            $configuration->setDownloadLink($token);
 
-        $user = new UserRepository();
-        $user = $user->findById(Auth::getUser()->getId());
+            $user = new UserRepository();
+            $user = $user->findById(Auth::getUser()->getId());
         // $user = $user->findById(1);
 
-        $configuration->setUser($user);
+            $configuration->setUser($user);
 
-        $this->repository->save($configuration);
+            $this->repository->save($configuration);
 
-        return true;
+            return true;
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     protected function identifier()
@@ -102,8 +99,8 @@ class ConfigurationService
     {
 
         $ch = curl_init(
-            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', $token
-        ));
+            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', $token)
+        );
 
         // Set cURL options
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -132,7 +129,7 @@ class ConfigurationService
         $url = sprintf('%s?token=%s', Env::get('API_PACKER') . 'download', $token);
 
         $ch = curl_init($url);
-        
+
         // Salvar o conteúdo em um arquivo temporário
         $tempFile = tempnam(sys_get_temp_dir(), 'zip_');
 

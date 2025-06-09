@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Core\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Utils\Mail;
 use App\Validators\Web\LoginValidator;
 use App\Validators\Web\SendResetPasswordLinkValidator;
 
@@ -69,6 +70,33 @@ class LoginService
 
             return false;
         }
+
+        $userRepository = new UserRepository();
+        $user = $userRepository->findByUsername($request->input('username'));
+
+        if (!$user) {
+            return true;
+        }
+
+        $token = bin2hex(random_bytes(32));
+        $user->setResetToken($token);
+        $user->setResetTokenCreatedAt(new \DateTime());
+        $userRepository->save($user);
+
+        $resetLink = sprintf('%s/password-reset?token=%s', $_ENV['APP_URL'] ?? 'http://localhost', $token);
+
+        try {
+            Mail::send(
+                'contatojuanzito@gmail.com',
+                'Recuperação de Senha',
+                "Clique no link para redefinir sua senha: $resetLink"
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+
+        return true;
     }
 
     public function getUser()

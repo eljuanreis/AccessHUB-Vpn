@@ -50,4 +50,11 @@ class UserRepository extends AbstractRepository
             ->getRepository(User::class)
             ->findOneBy(['email' => $email]);
     }
+
+    public function findByResetToken(string $email): ?User
+    {
+        return $this->entityManager()
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
+    }
 }

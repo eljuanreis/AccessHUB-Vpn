@@ -27,8 +27,12 @@ $router->get('/', 'AuthController@show');
 
 $router->get('/login', 'AuthController@show');
 $router->post('/login', 'AuthController@login');
-$router->get('/password-reset', 'AuthController@showPasswordReset');
-$router->post('/password-reset', 'AuthController@showPasswordReset');
+
+// Rotas de recuperação de senha
+$router->get('/password-reset', 'AuthController@showPasswordReset'); // Formulário para solicitar reset
+$router->post('/password-reset', 'AuthController@sendResetPasswordLink'); // Envia o e-mail com o link
+$router->get('/password-reset/confirm', 'AuthController@showResetPasswordForm'); // Formulário para nova senha
+$router->post('/password-reset/confirm', 'AuthController@resetPassword'); // Salva nova senha
 
 /**
  * Rotas com autenticação.

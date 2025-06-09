@@ -6,6 +6,7 @@
         "php": "^8.0",
         "doctrine/dbal": "^4.2",
         "doctrine/orm": "^3.3",
+        "phpmailer/phpmailer": "^6.10",
         "symfony/cache": "^7.3",
         "symfony/validator": "^7.3",
         "twig/twig": "^3.21",

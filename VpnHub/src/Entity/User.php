@@ -34,6 +34,12 @@ class User
     #[ORM\Column(type: "boolean")]
     private bool $active = true;
 
+    #[ORM\Column(type: "string", length: 64, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $resetTokenCreatedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -127,6 +133,28 @@ class User
     public function setActive(bool $active): self
     {
         $this->active = $active;
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
+
+    public function getResetTokenCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->resetTokenCreatedAt;
+    }
+
+    public function setResetTokenCreatedAt(?\DateTimeInterface $resetTokenCreatedAt): self
+    {
+        $this->resetTokenCreatedAt = $resetTokenCreatedAt;
         return $this;
     }
 }

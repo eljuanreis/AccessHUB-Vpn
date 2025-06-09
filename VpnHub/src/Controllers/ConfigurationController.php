@@ -37,7 +37,7 @@ class ConfigurationController
     public function generate()
     {
         $service = new ConfigurationService(new ConfigurationRepository());
-        
+
         try {
             if ($service->generate()) {
                 return new Response(json_encode('Configuração gerada com sucesso!'));
@@ -102,8 +102,5 @@ class ConfigurationController
 
             exit;
         }
-
     }
-
-
 }
