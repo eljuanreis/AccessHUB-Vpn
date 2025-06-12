@@ -22,8 +22,6 @@ class Downloader
 
     public static function make($userId)
     {
-        return 'C:\Users\DeLL\Desktop\AccessHUB-Vpn\TunnelPacker\teste.zip';
-
         $output = null;
         $retval = null;
 
