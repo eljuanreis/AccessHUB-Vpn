@@ -17,7 +17,7 @@ $dotenv->load();
  */
 $router = new Router();
 $router->get('/download', 'DownloadController@download');
-$router->post('/make', 'DownloadController@make');
+$router->get('/make', 'DownloadController@make');
 $router->post('/revoke', 'RevokeController@dispatch');
 
 $router->dispatch(new Request());
