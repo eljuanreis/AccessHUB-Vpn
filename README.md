@@ -66,13 +66,13 @@ graph TD
   - Servidor OpenVPN
   - Banco de Dados MySQL
 
-### 2. Aplicação do Usuário (Apache - 192.168.200.3)
+### 2. Aplicação do Usuário (VpnHub) (Apache - 192.168.200.3)
 - Servidor principal que hospeda a aplicação web, acessível externamente via firewall.
 - Realiza comunicação com:
   - Banco de Dados MySQL (192.168.200.4) para operações de leitura e escrita.
   - Servidor de Geração de Zip (192.168.200.2) através de requisições internas protegidas por token AES-256-CBC.
 
-### 3. Servidor de Geração de Zip (Apache - 192.168.200.2)
+### 3. Aplicação de Geração de Zip (TunnelPacker) (Apache - 192.168.200.2)
 - Servidor secundário que processa e gera arquivos ZIP.
 - Executa scripts `.sh` que interagem diretamente com o Servidor OpenVPN (192.168.200.1) para funcionalidades específicas da VPN.
 
