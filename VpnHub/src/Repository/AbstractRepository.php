@@ -28,7 +28,7 @@ class AbstractRepository
         foreach ($webQueryBuilder->getWheres() as $where) {
             list($field, $operator, $value) = $where;
 
-            $qb->where(sprintf('q.%s %s :%s', $field, $operator, $field))
+            $qb->andWhere(sprintf('q.%s %s :%s', $field, $operator, $field))
                 ->setParameter($field, $value);
         }
 
