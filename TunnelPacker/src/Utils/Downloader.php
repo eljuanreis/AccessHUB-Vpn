@@ -7,7 +7,7 @@ use Exception;
 class Downloader
 {
     protected const DIRECTORY = '/etc/openvpn/client-configs/%s.zip';
-    protected const CREATE_USER_SCRIPT = 'sudo sh /home/userlinux/create_user.sh %s';
+    protected const CREATE_USER_SCRIPT = 'sudo /home/userlinux/create_user.sh %s';
 
     public static function download($userId)
     {

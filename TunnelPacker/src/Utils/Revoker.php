@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class Revoker
 {
-    protected const REMOVE_USER_SCRIPT = 'sudo sh /home/userlinux/revoke_user.sh %s';
+    protected const REMOVE_USER_SCRIPT = 'sudo /home/userlinux/revoke_user.sh %s';
 
     public static function revoke($userId)
     {

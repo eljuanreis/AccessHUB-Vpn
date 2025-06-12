@@ -14,7 +14,7 @@ trait ValidateTokenTrait
 
         try {
             if ($data = Token::decryptToken($this->request->input('token'))) {
-                $this->data = json_decode($data);
+                $this->data = $data;
             }
 
            if (!$this->data) {

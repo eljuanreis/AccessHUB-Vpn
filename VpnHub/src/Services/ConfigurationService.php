@@ -99,7 +99,7 @@ class ConfigurationService
     {
 
         $ch = curl_init(
-            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', $token)
+            sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', rawurlencode($token))
         );
 
         // Set cURL options
@@ -128,7 +128,7 @@ class ConfigurationService
 
     protected function getZip(string $token)
     {
-        $url = sprintf('%s?token=%s', Env::get('API_PACKER') . 'download', $token);
+        $url = sprintf('%s?token=%s', Env::get('API_PACKER') . 'download', rawurlencode($token));
 
         $ch = curl_init($url);
 
