@@ -3,6 +3,10 @@
 {% block page_title %}Configurações VPN{% endblock %}
 
 {% block content %}
+<div class="mb-4">
+    {% include 'partials/_alerts.html.twig' %}
+</div>
+
 <div class="flex mb-4">
 <form action="vpn" method="GET" class="mb-4 mr-2 w-full sm:w-1/3">
   <input

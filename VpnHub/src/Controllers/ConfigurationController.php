@@ -79,7 +79,13 @@ class ConfigurationController
         $config = $repository->findByIdentifier($request->input('i'));
 
         $service = new ConfigurationService($repository);
-        $file = $service->download($config);
+        try {
+            $file = $service->download($config);
+        } catch (\Throwable $th) {
+            Session::put(Session::FLASH, 'errors', ['Erro ao baixar o arquivo de configuração.']);
+
+            return Route::redirect('GET', '/vpn');
+        }
 
         if ($file && file_exists($file)) {
             $downloadName = time() . '.zip'; // defina o nome real que você quer no navegador

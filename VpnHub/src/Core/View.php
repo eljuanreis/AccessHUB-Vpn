@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Utils\Auth;
 use App\Utils\Session;
 use Twig\Environment;
 
@@ -34,6 +35,10 @@ class View
         $path = sprintf('%s.html.twig', $path);
 
         $flashMessages = static::getFlashMessages();
+
+        if ($user = Auth::getUser()) {
+            $data['authenticatedUser'] = $user;
+        }
 
         $data = array_merge($data, $flashMessages);
 
