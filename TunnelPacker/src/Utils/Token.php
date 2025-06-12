@@ -23,9 +23,12 @@ class Token
 
     public static function decryptToken($encryptedData)
     {
+        $encryptedData = static::encryptToken('684acd6');
+        echo rawurlencode($encryptedData);
+        die();
         $cipher = $_ENV['CIPHER'];
         $key = $_ENV['TOKEN'];
-
+        
         $data = base64_decode($encryptedData, true);
         if ($data === false) {
             throw new \Exception("Base64 inválido.");
