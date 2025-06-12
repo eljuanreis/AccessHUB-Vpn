@@ -27,7 +27,7 @@ class RevokeController
     public function revoke()
     {
         try {
-            $exec = Revoker::revoke($this->request->input('user_id'));
+            $exec = Revoker::revoke($this->data);
         } catch (\Throwable $th) {
             return $this->response(400);
         }
