@@ -22,6 +22,7 @@ class ConfigurationService
         $webQueryBuilder = new WebQueryBuilder(Configuration::class);
         $webQueryBuilder->orderBy($request->input('orderBy', 'createdAt'), $request->input('direction', 'asc'));
         $webQueryBuilder->page($request->input('page', 1));
+        $webQueryBuilder->where('user', '=', Auth::getUser()->getId());
 
         if ($request->input('identifierTerm')) {
             $webQueryBuilder->where('identifier', 'LIKE', '%' . $request->input('identifierTerm') . '%');
@@ -92,7 +93,7 @@ class ConfigurationService
             return $file;
         }
 
-        return null;
+        throw new \Exception('Você não tem permissão para baixar esta configuração.');
     }
 
     protected function make($token)
