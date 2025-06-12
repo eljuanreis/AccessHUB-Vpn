@@ -19,8 +19,8 @@ graph TD
     end
 
     subgraph Firewall
-        FW_WAN(WAN)
-        FW_LAN(LAN<br>192.168.200.6)
+        FW_WAN(WAN<br>enp0s3<br>interface para Internet)
+        FW_LAN(LAN<br>192.168.200.6<br>enp0s8<br>rede interna)
     end
 
     subgraph Rede_Interna_192_168_200_0_24
@@ -32,11 +32,11 @@ graph TD
 
     USER -- Tráfego de Internet --> FW_WAN
 
-    FW_WAN -- TCP 80, 443 --> FW_LAN
-    FW_LAN -- Redireciona para --> M2_APACHE
+    FW_WAN -- TCP 80, 443 (enp0s3) --> FW_LAN
+    FW_LAN -- Redireciona (80/443) para 192.168.200.3 --> M2_APACHE
 
-    FW_WAN -- UDP 1194 --> FW_LAN
-    FW_LAN -- Redireciona para --> M1_OPENVPN
+    FW_WAN -- UDP 1194 (enp0s3) --> FW_LAN
+    FW_LAN -- Redireciona (1194) para 192.168.200.1 --> M1_OPENVPN
 
     M2_APACHE -- Acesso ao Banco de Dados --> DB_MYSQL
     M2_APACHE -- Requisição Interna (Token AES-256-CBC) --> M1_APACHE
@@ -52,7 +52,7 @@ graph TD
     class M2_APACHE,M1_OPENVPN,M1_APACHE node;
     class DB_MYSQL db;
     class FW_WAN,FW_LAN firewall;
-    class USER user;
+    class USER user
 ```
 ## Componentes Principais
 
