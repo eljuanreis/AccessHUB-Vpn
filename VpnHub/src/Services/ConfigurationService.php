@@ -97,7 +97,6 @@ class ConfigurationService
 
     protected function make($token)
     {
-
         $ch = curl_init(
             sprintf('%s?token=%s', Env::get('API_PACKER') . 'make', rawurlencode($token))
         );
@@ -166,15 +165,41 @@ class ConfigurationService
 
     public function revoke(Configuration $configuration)
     {
-
-        /**
-         * TODO: Apagar cerificado
-         */
-
+        $token = Token::encryptToken($configuration->getIdentifier());
+        $this->destroy($token);
         try {
             $this->repository->remove($configuration);
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function destroy($token) {
+        $ch = curl_init(
+            sprintf('%s?token=%s', Env::get('API_PACKER') . 'revoke', rawurlencode($token))
+        );
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true); // Use POST method
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($token)
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $token);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            echo 'Request error: ' . curl_error($ch);
+            curl_close($ch);
+            return false;
+        }
+
+        curl_close($ch);
+
+        return $response;
     }
 }
