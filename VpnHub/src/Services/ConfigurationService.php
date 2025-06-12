@@ -105,6 +105,8 @@ class ConfigurationService
         // Set cURL options
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true); // Use POST method
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($token)
@@ -138,6 +140,8 @@ class ConfigurationService
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // seguir redirecionamentos
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); // timeout opcional
         curl_setopt($ch, CURLOPT_FAILONERROR, true); // falhar se código HTTP for >= 400
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $success = curl_exec($ch);
 
